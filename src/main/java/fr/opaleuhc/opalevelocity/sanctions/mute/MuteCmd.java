@@ -26,11 +26,15 @@ public class MuteCmd implements SimpleCommand {
             sender.sendMessage(Component.text("§c[§e§l✯§c]§r » Vérification de la cible '§e" + args[0] + "§r' ..."));
             String r = "Non spécifiée";
             long duration = -1;
-            if (args.length == 2) {
-                duration = DateUtils.getDurationFromStr(args[1]);
+            if (args.length > 1) {
+                try {
+                    duration = DateUtils.getDurationFromStr(args[1]);
+                } catch (Exception e) {
+                    sender.sendMessage(Component.text("§c[§e§l✯§c]§r » La durée spécifiée est incorrecte !"));
+                    return;
+                }
             }
             if (args.length > 2) {
-                duration = DateUtils.getDurationFromStr(args[1]);
                 if (duration == 0) {
                     sender.sendMessage(Component.text("§c[§e§l✯§c]§r » La durée spécifiée est incorrecte !"));
                     return;

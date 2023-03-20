@@ -47,7 +47,7 @@ public class MuteCmd implements SimpleCommand {
             }
             String senderName = (sender instanceof Player p) ? p.getUsername() : "Console";
             boolean canBypassExistingMute = sender.hasPermission("opale.bypass.othermute");
-            String result = MuteManager.getInstance().mute(args[0], duration, r, senderName, canBypassExistingMute);
+            String result = MuteManager.instance.mute(args[0], duration, r, senderName, canBypassExistingMute);
             if (result.equalsIgnoreCase("muted"))
                 sender.sendMessage(Component.text("§c[§e§l✯§c]§r » Le joueur §e" + args[0] + "§r a été mute jusqu'au/de façon §e" + DateUtils.duration(duration)
                         + "§r pour la raison suivante: §e" + r + " §r(§e" + (System.currentTimeMillis() - start) + "ms§r)"));
@@ -68,7 +68,7 @@ public class MuteCmd implements SimpleCommand {
 
     @Override
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
-        return OpaleVelocity.getInstance().getEveryPlayersWithoutMe((Player) invocation.source());
+        return OpaleVelocity.instance.getEveryPlayersWithoutMe((Player) invocation.source());
     }
 
     @Override

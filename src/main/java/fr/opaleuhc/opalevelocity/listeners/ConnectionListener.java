@@ -18,13 +18,13 @@ public class ConnectionListener {
 
     @Subscribe
     public void onLogin(LoginEvent e) {
-        User user = UserManager.getInstance().getAccount(e.getPlayer().getUniqueId(), e.getPlayer().getUsername());
+        User user = UserManager.instance.getAccount(e.getPlayer().getUniqueId(), e.getPlayer().getUsername());
         if (user.isBanned()) {
             if (user.getBanExpiration() != -1 && user.getBanExpiration() < System.currentTimeMillis()) {
-                BanManager.getInstance().unban(user);
+                BanManager.instance.unban(user);
                 return;
             }
-            e.setResult(ResultedEvent.ComponentResult.denied(BanManager.getInstance().getDisconnectMessage(user.getBanReason(), user.getBanExpiration(), user.getBanAuthor())));
+            e.setResult(ResultedEvent.ComponentResult.denied(BanManager.instance.getDisconnectMessage(user.getBanReason(), user.getBanExpiration(), user.getBanAuthor())));
         }
     }
 

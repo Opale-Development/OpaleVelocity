@@ -12,18 +12,18 @@ public class PlayerListener {
     @Subscribe
     public void onPlayerChat(PlayerChatEvent e) {
         Player p = e.getPlayer();
-        User user = UserManager.getInstance().getAccount(p.getUniqueId(), p.getUsername());
+        User user = UserManager.instance.getAccount(p.getUniqueId(), p.getUsername());
         if (user == null) {
             e.setResult(PlayerChatEvent.ChatResult.denied());
             return;
         }
         if (user.isMuted()) {
             if (user.getMuteExpiration() != -1 && user.getMuteExpiration() < System.currentTimeMillis()) {
-                MuteManager.getInstance().unmute(user);
+                MuteManager.instance.unmute(user);
                 return;
             }
             e.setResult(PlayerChatEvent.ChatResult.denied());
-            p.sendMessage(MuteManager.getInstance().getMutedMessage(user.getMuteReason(), user.getMuteExpiration(), user.getMuteAuthor()));
+            p.sendMessage(MuteManager.instance.getMutedMessage(user.getMuteReason(), user.getMuteExpiration(), user.getMuteAuthor()));
         }
     }
 }

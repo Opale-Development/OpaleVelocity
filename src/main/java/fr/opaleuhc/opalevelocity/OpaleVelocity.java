@@ -6,6 +6,7 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import fr.opaleuhc.opalevelocity.cpm.CustomPluginMessageListener;
 import fr.opaleuhc.opalevelocity.listeners.ConnectionListener;
 import fr.opaleuhc.opalevelocity.listeners.PlayerListener;
 import fr.opaleuhc.opalevelocity.pm.MsgCmd;
@@ -17,7 +18,6 @@ import fr.opaleuhc.opalevelocity.sanctions.mute.MuteCmd;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteManager;
 import fr.opaleuhc.opalevelocity.utils.HTTPUtils;
 import fr.opaleuhc.opalevelocity.utils.UserManager;
-import lombok.Getter;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -34,11 +34,8 @@ import java.util.concurrent.CompletableFuture;
 )
 public class OpaleVelocity {
 
-    @Getter
     public static OpaleVelocity instance;
-    @Getter
     private final ProxyServer proxy;
-    @Getter
     private final Logger logger;
 
     @Inject
@@ -65,6 +62,7 @@ public class OpaleVelocity {
         logger.info("Registering listeners...");
         proxy.getEventManager().register(this, new PlayerListener());
         proxy.getEventManager().register(this, new ConnectionListener());
+        proxy.getEventManager().register(this, new CustomPluginMessageListener(proxy, logger));
 
         logger.info("Registering commands...");
         proxy.getCommandManager().register("b", new BanCmd(), "ban");
@@ -74,6 +72,14 @@ public class OpaleVelocity {
         proxy.getCommandManager().register("report", new ReportCmd());
 
         logger.info("OpaleVelocity loaded!");
+    }
+
+    public ProxyServer getProxy() {
+        return proxy;
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     public CompletableFuture<List<String>> getEveryPlayersWithoutMe(Player p) {

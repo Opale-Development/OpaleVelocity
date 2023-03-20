@@ -4,7 +4,6 @@ package fr.opaleuhc.opalevelocity.utils;
 import fr.opaleuhc.opalevelocity.OpaleVelocity;
 import fr.opaleuhc.opalevelocity.sanctions.ban.BanManager;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteManager;
-import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 public class UserManager {
 
-    @Getter
     public static UserManager instance;
     public ArrayList<User> users = new ArrayList<>();
 
@@ -25,16 +23,16 @@ public class UserManager {
     }
 
     public void checkForEndOfSanctions() {
-        OpaleVelocity.getInstance().getProxy().getScheduler().buildTask(OpaleVelocity.getInstance(), () -> {
+        OpaleVelocity.instance.getProxy().getScheduler().buildTask(OpaleVelocity.instance, () -> {
             for (User user : users) {
                 if (user.isBanned()) {
                     if (user.getBanExpiration() != -1 && user.getBanExpiration() < System.currentTimeMillis()) {
-                        BanManager.getInstance().unban(user);
+                        BanManager.instance.unban(user);
                     }
                 }
                 if (user.isMuted()) {
                     if (user.getMuteExpiration() != -1 && user.getMuteExpiration() < System.currentTimeMillis()) {
-                        MuteManager.getInstance().unmute(user);
+                        MuteManager.instance.unmute(user);
                     }
                 }
             }

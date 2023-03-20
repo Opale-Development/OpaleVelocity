@@ -33,7 +33,7 @@ public class ReportCmd implements SimpleCommand {
             source.sendMessage(Component.text("Usage: /report <joueur> <raison>"));
             return;
         }
-        Player target = OpaleVelocity.getInstance().getProxy().getPlayer(args[0]).orElse(null);
+        Player target = OpaleVelocity.instance.getProxy().getPlayer(args[0]).orElse(null);
         if (target == null) {
             source.sendMessage(Component.text("Ce joueur n'est pas connecté."));
             return;
@@ -61,7 +61,7 @@ public class ReportCmd implements SimpleCommand {
 
     @Override
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
-        return OpaleVelocity.getInstance().getEveryPlayersWithoutMe((Player) invocation.source());
+        return OpaleVelocity.instance.getEveryPlayersWithoutMe((Player) invocation.source());
     }
 
     @Override
@@ -75,10 +75,7 @@ public class ReportCmd implements SimpleCommand {
         webhook.setAvatarUrl("https://opaleuhc.fr/favicon.ico");
         webhook.setUsername("OpaleBungee - Report");
         webhook.addEmbed(new WebHookUtils.EmbedObject()
-                .setTitle("Report pour __**" + target + "**__")
-                .addField("Raison :", "```" + reason + "```", false)
-                .addField("Pseudo exact de la cible :", "```" + target + "```", false)
-                .addField("Lieu du report :", "```" + server + "```", false)
+                .setDescription("**Auteur ·** ``" + p.getUsername() + "``\\n**Joueur signalé ·** ``" + target + "``\\n**Motif ·** ``" + reason + "``\\n**Serveur ·** ``" + server + "``")
                 .setThumbnail("https://minotar.net/avatar/" + target + "/100.png")
                 .setAuthor(p.getUsername(), "", "https://minotar.net/avatar/" + p.getUsername() + "/100.png")
                 .setFooter("Envoyé depuis OpaleBungee à " + DateUtils.dateFromMillis(System.currentTimeMillis()), "https://opaleuhc.fr/favicon.ico")

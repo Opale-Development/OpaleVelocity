@@ -6,14 +6,12 @@ import fr.opaleuhc.opalevelocity.OpaleVelocity;
 import fr.opaleuhc.opalevelocity.utils.DateUtils;
 import fr.opaleuhc.opalevelocity.utils.User;
 import fr.opaleuhc.opalevelocity.utils.UserManager;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class MuteManager {
 
-    @Getter
     public static MuteManager instance;
 
     public MuteManager() {
@@ -26,10 +24,10 @@ public class MuteManager {
     }
 
     public String mute(String targetStr, long duration, String reason, String muter, boolean doesBannerCanBypassExistingMute) {
-        Player target = OpaleVelocity.getInstance().getProxy().getPlayer(targetStr).orElse(null);
+        Player target = OpaleVelocity.instance.getProxy().getPlayer(targetStr).orElse(null);
         long expiration = (duration > 0 ? System.currentTimeMillis() + duration : -1);
         if (target != null) target.sendMessage(getMutedMessage(reason, expiration, muter));
-        User user = UserManager.getInstance().getAccount(targetStr);
+        User user = UserManager.instance.getAccount(targetStr);
         if (user != null) {
             if (!user.isMuted()) {
                 setMute(user, muter, reason, expiration);
@@ -46,14 +44,14 @@ public class MuteManager {
 
     public void setMute(User user, String muter, String reason, long expiration) {
         user.setMute(muter, reason, expiration);
-        UserManager.getInstance().makePatch(user.getUuid(), "mute", user.getMute());
+        UserManager.instance.makePatch(user.getUuid(), "mute", user.getMute());
     }
 
     public void unmute(User user) {
         user.setMute(null, null, 0);
-        UserManager.getInstance().makePatch(user.getUuid(), "mute", "null");
-        if (OpaleVelocity.getInstance().getProxy().getPlayer(user.getUuid()).isPresent())
-            OpaleVelocity.getInstance().getProxy().getPlayer(user.getUuid()).get().sendMessage(getMessageOfEnd());
+        UserManager.instance.makePatch(user.getUuid(), "mute", "null");
+        if (OpaleVelocity.instance.getProxy().getPlayer(user.getUuid()).isPresent())
+            OpaleVelocity.instance.getProxy().getPlayer(user.getUuid()).get().sendMessage(getMessageOfEnd());
     }
 
     public Component getMessageOfEnd() {

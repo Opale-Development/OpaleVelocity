@@ -47,7 +47,7 @@ public class BanCmd implements SimpleCommand {
             }
             boolean canBypassExistingBan = sender.hasPermission("opale.bypass.otherban");
             String senderName = (sender instanceof Player p) ? p.getUsername() : "Console";
-            String result = BanManager.getInstance().ban(args[0], duration, r, senderName, canBypassExistingBan);
+            String result = BanManager.instance.ban(args[0], duration, r, senderName, canBypassExistingBan);
             if (result.equalsIgnoreCase("banned"))
                 sender.sendMessage(Component.text("§c[§e§l✯§c]§r » Le joueur §e" + args[0] + "§r a été banni jusqu'au/de façon §e" + DateUtils.duration(duration)
                         + "§r pour la raison suivante: §e" + r + " §r(§e" + (System.currentTimeMillis() - start) + "ms§r)"));
@@ -68,7 +68,7 @@ public class BanCmd implements SimpleCommand {
 
     @Override
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
-        return OpaleVelocity.getInstance().getEveryPlayersWithoutMe((Player) invocation.source());
+        return OpaleVelocity.instance.getEveryPlayersWithoutMe((Player) invocation.source());
     }
 
     @Override

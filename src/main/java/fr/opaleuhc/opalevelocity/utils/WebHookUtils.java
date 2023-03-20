@@ -12,11 +12,11 @@ import java.util.*;
 
 public class WebHookUtils {
     private final String url;
+    private final List<EmbedObject> embeds;
     private String content;
     private String username;
     private String avatarUrl;
     private boolean tts;
-    private List<EmbedObject> embeds;
 
     public WebHookUtils(final String url) {
         this.embeds = new ArrayList<EmbedObject>();
@@ -122,6 +122,7 @@ public class WebHookUtils {
     }
 
     public static class EmbedObject {
+        private final List<Field> fields;
         private String title;
         private String description;
         private String url;
@@ -130,7 +131,6 @@ public class WebHookUtils {
         private Thumbnail thumbnail;
         private Image image;
         private Author author;
-        private List<Field> fields;
 
         public EmbedObject() {
             this.fields = new ArrayList<Field>();
@@ -381,7 +381,7 @@ public class WebHookUtils {
                 } else if (val instanceof Boolean) {
                     builder.append(val);
                 } else if (val instanceof JSONObject) {
-                    builder.append(val.toString());
+                    builder.append(val);
                 } else if (val.getClass().isArray()) {
                     builder.append("[");
                     for (int len = Array.getLength(val), j = 0; j < len; ++j) {

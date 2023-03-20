@@ -1,15 +1,15 @@
-package fr.opaleuhc.opalevelocity.cmd;
+package fr.opaleuhc.opalevelocity.staff;
 
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
+import fr.opaleuhc.opalevelocity.OpaleVelocity;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class DiscordCmd implements SimpleCommand {
+public class StaffGCmd implements SimpleCommand {
 
     @Override
     public void execute(Invocation invocation) {
@@ -17,27 +17,26 @@ public class DiscordCmd implements SimpleCommand {
         String[] args = invocation.arguments();
 
         if (!(source instanceof Player p)) {
-            source.sendMessage(Component.text("§cVous devez être un joueur pour exécuter cette commande !"));
+            source.sendMessage(Component.text("§cYou must be a player to execute this command."));
             return;
         }
-        Component component = Component.text("\n§3Discord : §bhttps://discord.opaleuhc.fr\n");
-        component = component.hoverEvent(Component.text("§bCliquez ici pour rejoindre le discord !"));
-        component = component.clickEvent(ClickEvent.openUrl("https://discord.opaleuhc.fr"));
-        p.sendMessage(component);
+        String message = String.join(" ", args);
+        OpaleVelocity.instance.sendStaffMsgToEveryoneOnTheProxy(message, "opaleuhc.staff", p.getUsername());
     }
 
     @Override
     public List<String> suggest(Invocation invocation) {
-        return SimpleCommand.super.suggest(invocation);
+        return null;
     }
 
     @Override
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
-        return SimpleCommand.super.suggestAsync(invocation);
+        return new CompletableFuture<>();
     }
 
     @Override
     public boolean hasPermission(Invocation invocation) {
-        return SimpleCommand.super.hasPermission(invocation);
+        return invocation.source().hasPermission("opaleuhc.staff");
     }
+
 }

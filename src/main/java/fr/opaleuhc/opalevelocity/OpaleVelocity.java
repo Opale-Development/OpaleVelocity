@@ -6,7 +6,10 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.ServerInfo;
 import fr.opaleuhc.opalevelocity.cmd.DiscordCmd;
+import fr.opaleuhc.opalevelocity.cmd.InfoCmd;
+import fr.opaleuhc.opalevelocity.cmd.InfoGCmd;
 import fr.opaleuhc.opalevelocity.cmd.MumbleCmd;
 import fr.opaleuhc.opalevelocity.cpm.CPMListener;
 import fr.opaleuhc.opalevelocity.listeners.ConnectionListener;
@@ -18,9 +21,12 @@ import fr.opaleuhc.opalevelocity.sanctions.ban.BanCmd;
 import fr.opaleuhc.opalevelocity.sanctions.ban.BanManager;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteCmd;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteManager;
+import fr.opaleuhc.opalevelocity.staff.StaffCmd;
+import fr.opaleuhc.opalevelocity.staff.StaffGCmd;
 import fr.opaleuhc.opalevelocity.tab.TABManager;
 import fr.opaleuhc.opalevelocity.utils.HTTPUtils;
 import fr.opaleuhc.opalevelocity.utils.UserManager;
+import net.kyori.adventure.text.Component;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -76,6 +82,10 @@ public class OpaleVelocity {
         proxy.getCommandManager().register("report", new ReportCmd());
         proxy.getCommandManager().register("discord", new DiscordCmd());
         proxy.getCommandManager().register("mumble", new MumbleCmd());
+        proxy.getCommandManager().register("staff", new StaffCmd());
+        proxy.getCommandManager().register("staffg", new StaffGCmd());
+        proxy.getCommandManager().register("info", new InfoCmd());
+        proxy.getCommandManager().register("infog", new InfoGCmd());
 
         logger.info("OpaleVelocity loaded!");
     }
@@ -94,5 +104,35 @@ public class OpaleVelocity {
             if (!player.equals(p)) players.add(player.getUsername());
         }
         return CompletableFuture.completedFuture(players);
+    }
+
+    public void sendStaffMsgToEveryoneOnTheSpigot(String message, String perm, ServerInfo serverInfo, String sender) {
+        for (Player player : proxy.getAllPlayers()) {
+            if (!player.hasPermission(perm)) continue;
+            if (serverInfo != null && player.getCurrentServer().isPresent() && player.getCurrentServer().get().getServer().getServerInfo().equals(serverInfo)) {
+                player.sendMessage(Component.text("§c[STAFF : " + sender + "] §f" + message));
+            }
+        }
+    }
+
+    public void sendStaffMsgToEveryoneOnTheProxy(String message, String perm, String sender) {
+        for (Player p : proxy.getAllPlayers()) {
+            if (!p.hasPermission(perm)) continue;
+            p.sendMessage(Component.text("§c[STAFF GLOBAL : " + sender + "] §f" + message));
+        }
+    }
+
+    public void sendToEveryoneOnSpigot(String message, ServerInfo serverInfo) {
+        for (Player player : proxy.getAllPlayers()) {
+            if (serverInfo != null && player.getCurrentServer().isPresent() && player.getCurrentServer().get().getServer().getServerInfo().equals(serverInfo)) {
+                player.sendMessage(Component.text(message));
+            }
+        }
+    }
+
+    public void sendToEveryoneOnProxy(String message) {
+        for (Player p : proxy.getAllPlayers()) {
+            p.sendMessage(Component.text(message));
+        }
     }
 }

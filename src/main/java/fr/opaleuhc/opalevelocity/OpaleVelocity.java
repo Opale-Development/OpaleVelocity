@@ -6,7 +6,9 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
-import fr.opaleuhc.opalevelocity.cpm.CustomPluginMessageListener;
+import fr.opaleuhc.opalevelocity.cmd.DiscordCmd;
+import fr.opaleuhc.opalevelocity.cmd.MumbleCmd;
+import fr.opaleuhc.opalevelocity.cpm.CPMListener;
 import fr.opaleuhc.opalevelocity.listeners.ConnectionListener;
 import fr.opaleuhc.opalevelocity.listeners.PlayerListener;
 import fr.opaleuhc.opalevelocity.pm.MsgCmd;
@@ -16,6 +18,7 @@ import fr.opaleuhc.opalevelocity.sanctions.ban.BanCmd;
 import fr.opaleuhc.opalevelocity.sanctions.ban.BanManager;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteCmd;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteManager;
+import fr.opaleuhc.opalevelocity.tab.TABManager;
 import fr.opaleuhc.opalevelocity.utils.HTTPUtils;
 import fr.opaleuhc.opalevelocity.utils.UserManager;
 import org.slf4j.Logger;
@@ -58,11 +61,12 @@ public class OpaleVelocity {
         new UserManager();
         new BanManager();
         new MuteManager();
+        new TABManager();
 
         logger.info("Registering listeners...");
         proxy.getEventManager().register(this, new PlayerListener());
         proxy.getEventManager().register(this, new ConnectionListener());
-        proxy.getEventManager().register(this, new CustomPluginMessageListener(proxy, logger));
+        proxy.getEventManager().register(this, new CPMListener(proxy, logger));
 
         logger.info("Registering commands...");
         proxy.getCommandManager().register("b", new BanCmd(), "ban");
@@ -70,6 +74,8 @@ public class OpaleVelocity {
         proxy.getCommandManager().register("msg", new MsgCmd());
         proxy.getCommandManager().register("r", new ReplyCmd(), "reply");
         proxy.getCommandManager().register("report", new ReportCmd());
+        proxy.getCommandManager().register("discord", new DiscordCmd());
+        proxy.getCommandManager().register("mumble", new MumbleCmd());
 
         logger.info("OpaleVelocity loaded!");
     }

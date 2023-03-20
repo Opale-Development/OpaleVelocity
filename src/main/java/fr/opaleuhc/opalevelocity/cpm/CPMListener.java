@@ -15,14 +15,14 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.util.Optional;
 
-public class CustomPluginMessageListener {
+public class CPMListener {
 
-    public static CustomPluginMessageListener instance;
+    public static CPMListener instance;
     private final ProxyServer proxy;
     private final Logger logger;
     public ChannelIdentifier channelIdentifier;
 
-    public CustomPluginMessageListener(ProxyServer proxy, Logger logger) {
+    public CPMListener(ProxyServer proxy, Logger logger) {
         this.proxy = proxy;
         this.logger = logger;
 

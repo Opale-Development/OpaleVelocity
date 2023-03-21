@@ -6,11 +6,9 @@ import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
+import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
-import fr.opaleuhc.opalevelocity.cmd.DiscordCmd;
-import fr.opaleuhc.opalevelocity.cmd.InfoCmd;
-import fr.opaleuhc.opalevelocity.cmd.InfoGCmd;
-import fr.opaleuhc.opalevelocity.cmd.MumbleCmd;
+import fr.opaleuhc.opalevelocity.cmd.*;
 import fr.opaleuhc.opalevelocity.cpm.CPMListener;
 import fr.opaleuhc.opalevelocity.listeners.ConnectionListener;
 import fr.opaleuhc.opalevelocity.listeners.PlayerListener;
@@ -86,6 +84,7 @@ public class OpaleVelocity {
         proxy.getCommandManager().register("staffg", new StaffGCmd());
         proxy.getCommandManager().register("info", new InfoCmd());
         proxy.getCommandManager().register("infog", new InfoGCmd());
+        proxy.getCommandManager().register("hub", new HubCmd());
 
         logger.info("OpaleVelocity loaded!");
     }
@@ -96,6 +95,14 @@ public class OpaleVelocity {
 
     public Logger getLogger() {
         return logger;
+    }
+
+    public RegisteredServer getHubServer() {
+        for (RegisteredServer rs : getProxy().getAllServers()) {
+            if (rs.getServerInfo().getName().contains("hub")) return rs;
+
+        }
+        return null;
     }
 
     public CompletableFuture<List<String>> getEveryPlayersWithoutMe(Player p) {

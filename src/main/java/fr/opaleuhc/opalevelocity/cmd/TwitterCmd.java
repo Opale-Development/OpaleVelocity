@@ -9,13 +9,12 @@ import net.kyori.adventure.text.event.ClickEvent;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class MumbleCmd implements SimpleCommand {
+public class TwitterCmd implements SimpleCommand {
 
-    public static void sendMumble(Player p) {
-        Component component = Component.text("\n§3Addresse du mumble : §bmumble.opaleuhc.fr\n");
-        component = component.hoverEvent(Component.text("§bCliquez ici pour copier l'adresse du mumble !"));
-        component = component.clickEvent(ClickEvent.copyToClipboard("mumble.opaleuhc.fr"));
-        component = component.clickEvent(ClickEvent.suggestCommand("mumble.opaleuhc.fr"));
+    public static void sendTwitter(Player p) {
+        Component component = Component.text("\n§3Compte twitter : §bhttps://twitter.opaleuhc.fr\n");
+        component = component.hoverEvent(Component.text("§bCliquez ici pour ouvrir l'adresse et accéder au compte !"));
+        component = component.clickEvent(ClickEvent.openUrl("https://twitter.opaleuhc.fr"));
         p.sendMessage(component);
     }
 
@@ -27,7 +26,7 @@ public class MumbleCmd implements SimpleCommand {
             source.sendMessage(Component.text("§cVous devez être un joueur pour exécuter cette commande !"));
             return;
         }
-        sendMumble(p);
+        sendTwitter(p);
     }
 
     @Override

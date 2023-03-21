@@ -9,6 +9,9 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import com.velocitypowered.api.proxy.ServerConnection;
 import com.velocitypowered.api.proxy.messages.ChannelIdentifier;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
+import fr.opaleuhc.opalevelocity.cmd.DiscordCmd;
+import fr.opaleuhc.opalevelocity.cmd.MumbleCmd;
+import fr.opaleuhc.opalevelocity.cmd.TwitterCmd;
 import org.slf4j.Logger;
 
 import java.io.ByteArrayInputStream;
@@ -54,6 +57,14 @@ public class CPMListener {
 
             if (channel.equals("account")) {
 
+            }
+            if (subchannel.equals("want")) {
+                switch (msg) {
+                    case "discord" -> DiscordCmd.sendDiscord(player);
+                    case "mumble" -> MumbleCmd.sendMumble(player);
+                    case "twitter" -> TwitterCmd.sendTwitter(player);
+                }
+                return;
             }
         } catch (Exception e) {
             logger.error("Error while handling message", e);

@@ -80,6 +80,7 @@ public class OpaleVelocity {
         proxy.getCommandManager().register("report", new ReportCmd());
         proxy.getCommandManager().register("discord", new DiscordCmd());
         proxy.getCommandManager().register("mumble", new MumbleCmd());
+        proxy.getCommandManager().register("twitter", new TwitterCmd());
         proxy.getCommandManager().register("staff", new StaffCmd());
         proxy.getCommandManager().register("staffg", new StaffGCmd());
         proxy.getCommandManager().register("info", new InfoCmd());

@@ -12,6 +12,8 @@ import fr.opaleuhc.opalevelocity.cmd.*;
 import fr.opaleuhc.opalevelocity.cpm.CPMListener;
 import fr.opaleuhc.opalevelocity.listeners.ConnectionListener;
 import fr.opaleuhc.opalevelocity.listeners.PlayerListener;
+import fr.opaleuhc.opalevelocity.maintenance.MaintenanceGCmd;
+import fr.opaleuhc.opalevelocity.maintenance.MaintenanceGManager;
 import fr.opaleuhc.opalevelocity.pm.MsgCmd;
 import fr.opaleuhc.opalevelocity.pm.ReplyCmd;
 import fr.opaleuhc.opalevelocity.report.ReportCmd;
@@ -66,6 +68,7 @@ public class OpaleVelocity {
         new BanManager();
         new MuteManager();
         new TABManager();
+        new MaintenanceGManager();
 
         logger.info("Registering listeners...");
         proxy.getEventManager().register(this, new PlayerListener());
@@ -86,6 +89,7 @@ public class OpaleVelocity {
         proxy.getCommandManager().register("info", new InfoCmd());
         proxy.getCommandManager().register("infog", new InfoGCmd());
         proxy.getCommandManager().register("hub", new HubCmd());
+        proxy.getCommandManager().register("maintenanceg", new MaintenanceGCmd());
 
         logger.info("OpaleVelocity loaded!");
     }

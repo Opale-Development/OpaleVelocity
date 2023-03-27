@@ -25,6 +25,10 @@ public class TABManager {
                         Component.text("§3§lOpaleUHC\n\n§7Connectés : §f" + global_connected + "\n"),
                         Component.text("\n§3mc.opaleuhc.fr")
                 );
+                /*for (TabListEntry entry : player.getTabList().getEntries()) {
+                    String prefix = LuckPerms.instance.getPrefix(entry.getProfile().getId());
+                    entry.setDisplayName(Component.text((prefix.length() > 1 ? prefix + " " : "") + "§f" + entry.getProfile().getName()));
+                }*/
             }
         });
     }

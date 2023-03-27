@@ -3,6 +3,7 @@ package fr.opaleuhc.opalevelocity;
 import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
@@ -10,6 +11,7 @@ import com.velocitypowered.api.proxy.server.RegisteredServer;
 import com.velocitypowered.api.proxy.server.ServerInfo;
 import fr.opaleuhc.opalevelocity.cmd.*;
 import fr.opaleuhc.opalevelocity.cpm.CPMListener;
+import fr.opaleuhc.opalevelocity.dependencies.LuckPerms;
 import fr.opaleuhc.opalevelocity.listeners.ConnectionListener;
 import fr.opaleuhc.opalevelocity.listeners.PlayerListener;
 import fr.opaleuhc.opalevelocity.maintenance.MaintenanceGCmd;
@@ -27,6 +29,7 @@ import fr.opaleuhc.opalevelocity.tab.TABManager;
 import fr.opaleuhc.opalevelocity.utils.HTTPUtils;
 import fr.opaleuhc.opalevelocity.utils.UserManager;
 import net.kyori.adventure.text.Component;
+import net.luckperms.api.LuckPermsProvider;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
@@ -39,7 +42,10 @@ import java.util.concurrent.CompletableFuture;
         version = "1.0.0",
         description = "OpaleVelocity plugin",
         url = "https://opaleuhc.fr",
-        authors = "OpaleUHC"
+        authors = "OpaleUHC",
+        dependencies = {
+                @Dependency(id = "luckperms")
+        }
 )
 public class OpaleVelocity {
 
@@ -62,6 +68,9 @@ public class OpaleVelocity {
         logger.info("Proxy initialized, loading OpaleVelocity...");
 
         HTTPUtils.setApiKey(System.getenv("API_KEY"));
+
+        logger.info("Registering dependencies...");
+        new LuckPerms(proxy, logger, LuckPermsProvider.get());
 
         logger.info("Initializing managers...");
         new UserManager();

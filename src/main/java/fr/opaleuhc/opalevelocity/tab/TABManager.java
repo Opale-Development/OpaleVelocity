@@ -21,10 +21,11 @@ public class TABManager {
         CompletableFuture.runAsync(() -> {
             int global_connected = OpaleVelocity.instance.getProxy().getAllPlayers().size();
             for (Player player : OpaleVelocity.instance.getProxy().getAllPlayers()) {
-                player.getTabList().setHeaderAndFooter(
-                        Component.text("§3§lOpaleUHC\n\n§7Connectés : §f" + global_connected + "\n"),
-                        Component.text("\n§3mc.opaleuhc.fr")
-                );
+                if (player.getCurrentServer().isPresent() && OpaleVelocity.instance.canUpdateTABForServer(player.getCurrentServer().get().getServerInfo()))
+                    player.getTabList().setHeaderAndFooter(
+                            Component.text("§3§lOpaleUHC\n\n§7Connectés : §f" + global_connected + "\n"),
+                            Component.text("\n§3mc.opaleuhc.fr")
+                    );
                 /*for (TabListEntry entry : player.getTabList().getEntries()) {
                     String prefix = LuckPerms.instance.getPrefix(entry.getProfile().getId());
                     entry.setDisplayName(Component.text((prefix.length() > 1 ? prefix + " " : "") + "§f" + entry.getProfile().getName()));

@@ -156,4 +156,8 @@ public class OpaleVelocity {
             p.sendMessage(Component.text(message));
         }
     }
+
+    public boolean canUpdateTABForServer(ServerInfo serverInfo) {
+        return serverInfo.getName().contains("hub") || serverInfo.getName().contains("lobby");
+    }
 }

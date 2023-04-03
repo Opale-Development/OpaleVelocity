@@ -2,12 +2,14 @@ package fr.opaleuhc.opalevelocity.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+import java.util.TimeZone;
 
 public class DateUtils {
 
     public static String dateFromMillis(long millis) {
-        return new SimpleDateFormat("HH:mm:ss dd/MM/yyyy", Locale.FRANCE).format(new Date(millis));
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
+        return sdf.format(new Date(millis));
     }
 
     public static long getDurationFromStr(String str) {

@@ -21,8 +21,9 @@ public class BanManager {
     }
 
     public Component getDisconnectMessage(String reason, long expiration, String banner) {
-        return Component.text("§4§lVous êtes banni du serveur.\n\n§cRaison : §e" + reason + "\n§cExpiration : §e" + (expiration == -1 ? "Permanent" : DateUtils.dateFromMillis(expiration))
-                + "\n§cPar : §e" + banner);
+        return Component.text("§4§lVous êtes banni du serveur.\n\n§cRaison : §e" + reason + "\n§cExpiration : §e" +
+                (expiration == -1 ? "Permanent" : DateUtils.dateFromMillis(expiration))
+                + "\n§cPar : §e" + banner + "\n\nPour toute réclamation, merci de faire un ticket sur discord.\n§c§lhttps://discord.opaleuhc.fr");
     }
 
     public String ban(String targetStr, long duration, String reason, String banner, boolean doesBannerCanBypassExistingBan) {

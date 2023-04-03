@@ -19,8 +19,9 @@ public class MuteManager {
     }
 
     public @NonNull ComponentLike getMutedMessage(String reason, long expiration, String muter) {
-        return Component.text("§4§lVous êtes mute sur le serveur.\n\n§cRaison : §e" + reason + "\n§cExpiration : §e" + (expiration == -1 ? "Permanent" : DateUtils.dateFromMillis(expiration))
-                + "\n§cPar : §e" + muter);
+        return Component.text("§4§lVous êtes mute sur le serveur.\n\n§cRaison : §e" + reason + "\n§cExpiration : §e" +
+                (expiration == -1 ? "Permanent" : DateUtils.dateFromMillis(expiration))
+                + "\n§cPar : §e" + muter + "\n\nPour toute réclamation, merci de faire un ticket sur discord.\n§c§lhttps://discord.opaleuhc.fr");
     }
 
     public String mute(String targetStr, long duration, String reason, String muter, boolean doesBannerCanBypassExistingMute) {

@@ -24,6 +24,7 @@ public class CPMListener {
     private final ProxyServer proxy;
     private final Logger logger;
     public ChannelIdentifier channelIdentifier;
+    public ChannelIdentifier sanctionsChannelIdentifier;
 
     public CPMListener(ProxyServer proxy, Logger logger) {
         this.proxy = proxy;
@@ -32,14 +33,25 @@ public class CPMListener {
         instance = this;
 
         channelIdentifier = MinecraftChannelIdentifier.from("opaleuhc:update");
+        sanctionsChannelIdentifier = MinecraftChannelIdentifier.from("opaleuhc:sanctions");
 
         proxy.getChannelRegistrar().register(channelIdentifier);
+        proxy.getChannelRegistrar().register(sanctionsChannelIdentifier);
 
         logger.info("Loaded CustomPluginMessageListener.");
     }
 
+    public void checkForSanctionChannel(PluginMessageEvent e) {
+        if (!e.getIdentifier().getId().equals(sanctionsChannelIdentifier.getId()))
+            return;
+        if (!(e.getTarget() instanceof Player p)) return;
+        e.setResult(PluginMessageEvent.ForwardResult.handled());
+        handleSanctionMessage(p, e.getData(), e.getIdentifier().getId());
+    }
+
     @Subscribe
     public void onPluginMessage(PluginMessageEvent e) {
+        checkForSanctionChannel(e);
         if (!e.getIdentifier().getId().equals(channelIdentifier.getId()))
             return;
         if (!(e.getTarget() instanceof Player)) return;
@@ -65,6 +77,22 @@ public class CPMListener {
                     case "twitter" -> TwitterCmd.sendTwitter(player);
                 }
                 return;
+            }
+        } catch (Exception e) {
+            logger.error("Error while handling message", e);
+        }
+    }
+
+    public void handleSanctionMessage(Player p, byte[] data, String channel) {
+        DataInputStream in = new DataInputStream(new ByteArrayInputStream(data));
+        try {
+            String subchannel = in.readUTF();
+            String msg = in.readUTF();
+
+            System.out.println("Received message from " + p.getUsername() + " on channel " + channel + " with subchannel " + subchannel + " and message " + msg);
+
+            if (subchannel.equals("mute")) {
+                System.out.println("Received mute cpm message from " + p.getUsername());
             }
         } catch (Exception e) {
             logger.error("Error while handling message", e);

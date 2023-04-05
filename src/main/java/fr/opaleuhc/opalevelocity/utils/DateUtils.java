@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 public class DateUtils {
 
     public static String dateFromMillis(long millis) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("Europe/Paris"));
         return sdf.format(new Date(millis));
     }

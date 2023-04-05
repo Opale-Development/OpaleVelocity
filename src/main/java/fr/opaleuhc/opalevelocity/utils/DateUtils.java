@@ -3,6 +3,7 @@ package fr.opaleuhc.opalevelocity.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 public class DateUtils {
 
@@ -28,6 +29,33 @@ public class DateUtils {
     public static String duration(long millis) {
         if (millis == -1) return "permanente";
         return dateFromMillis(System.currentTimeMillis() - millis);
+    }
+
+
+    public static String getDurationIn(long millis) {
+        if (millis == -1) return "permanent";
+
+        StringBuilder sb = new StringBuilder();
+
+        long years = TimeUnit.MILLISECONDS.toDays(millis) / 365;
+        long months = TimeUnit.MILLISECONDS.toDays(millis) / 30;
+        long days = TimeUnit.MILLISECONDS.toDays(millis) % 365;
+        long hours = TimeUnit.MILLISECONDS.toHours(millis) % 24;
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(millis) % 60;
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis) % 60;
+
+        if (years > 0) sb.append(years).append(" ").append("année").append((years > 1) ? "s" : "");
+        if (months > 0) sb.append(sb.length() > 0 ? ", " : "").append(months).append(" ").append("mois");
+        if (days > 0)
+            sb.append(sb.length() > 0 ? ", " : "").append(days).append(" ").append("jour").append((days > 1) ? "s" : "");
+        if (hours > 0)
+            sb.append(sb.length() > 0 ? ", " : "").append(hours).append(" ").append("heure").append((hours > 1) ? "s" : "");
+        if (minutes > 0)
+            sb.append(sb.length() > 0 ? ", " : "").append(minutes).append(" ").append("minute").append((minutes > 1) ? "s" : "");
+        if (seconds > 0)
+            sb.append(sb.length() > 0 ? ", " : "").append(seconds).append(" ").append("seconde").append((seconds > 1) ? "s" : "");
+
+        return sb.toString();
     }
 
 

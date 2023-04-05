@@ -73,12 +73,12 @@ public class ReportCmd implements SimpleCommand {
         long start = System.currentTimeMillis();
         final WebHookUtils webhook = new WebHookUtils("https://discord.com/api/webhooks/1086949400191979560/5Zb3BtJVXtvisb98AHpahFg7sh14cwO7Cz_I7uQAHkt81F9eUCdL-tQe_I_KERmG144D");
         webhook.setAvatarUrl("https://opaleuhc.fr/favicon.ico");
-        webhook.setUsername("OpaleBungee - Report");
+        webhook.setUsername("OpaleVelocity - Report");
         webhook.addEmbed(new WebHookUtils.EmbedObject()
                 .setDescription("**Auteur ·** ``" + p.getUsername() + "``\\n**Joueur signalé ·** ``" + target + "``\\n**Motif ·** ``" + reason + "``\\n**Serveur ·** ``" + server + "``")
                 .setThumbnail("https://minotar.net/avatar/" + target + "/100.png")
                 .setAuthor(p.getUsername(), "", "https://minotar.net/avatar/" + p.getUsername() + "/100.png")
-                .setFooter("Envoyé depuis OpaleBungee à " + DateUtils.dateFromMillis(System.currentTimeMillis()), "https://opaleuhc.fr/favicon.ico")
+                .setFooter("Envoyé depuis OpaleVelocity à " + DateUtils.dateFromMillis(System.currentTimeMillis()), "https://opaleuhc.fr/favicon.ico")
                 .setColor(Color.decode("#29ad91")));
         webhook.setTts(false);
         try {

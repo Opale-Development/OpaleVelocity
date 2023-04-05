@@ -3,6 +3,7 @@ package fr.opaleuhc.opalevelocity.sanctions.ban;
 
 import com.velocitypowered.api.proxy.Player;
 import fr.opaleuhc.opalevelocity.OpaleVelocity;
+import fr.opaleuhc.opalevelocity.sanctions.SanctionWebhook;
 import fr.opaleuhc.opalevelocity.utils.DateUtils;
 import fr.opaleuhc.opalevelocity.utils.User;
 import fr.opaleuhc.opalevelocity.utils.UserManager;
@@ -34,15 +35,25 @@ public class BanManager {
         if (user != null) {
             if (!user.isBanned()) {
                 setBan(user, banner, reason, expiration);
+                sendWebHook(banner, target, reason, duration, targetStr);
                 return "banned";
             }
             if (doesBannerCanBypassExistingBan) {
                 setBan(user, banner, reason, expiration);
+                sendWebHook(banner, target, reason, duration, targetStr);
                 return "overrided";
             }
             return "already banned";
         }
         return "no user";
+    }
+
+    public void sendWebHook(String muter, Player target, String reason, long duration, String targetName) {
+        String serverName = "Aucun";
+        if (target != null && target.getCurrentServer().isPresent())
+            serverName = target.getCurrentServer().get().getServerInfo().getName();
+
+        SanctionWebhook.instance.sendWebHook(muter, targetName, reason, "Ban pendant " + DateUtils.getDurationIn(duration), serverName);
     }
 
     public void setBan(User user, String banner, String reason, long expiration) {

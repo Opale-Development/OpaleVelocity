@@ -3,7 +3,6 @@ package fr.opaleuhc.opalevelocity.sanctions.mute;
 
 import com.velocitypowered.api.proxy.Player;
 import fr.opaleuhc.opalevelocity.OpaleVelocity;
-import fr.opaleuhc.opalevelocity.sanctions.SanctionWebhook;
 import fr.opaleuhc.opalevelocity.utils.DateUtils;
 import fr.opaleuhc.opalevelocity.utils.User;
 import fr.opaleuhc.opalevelocity.utils.UserManager;
@@ -51,7 +50,7 @@ public class MuteManager {
         if (target != null && target.getCurrentServer().isPresent())
             serverName = target.getCurrentServer().get().getServerInfo().getName();
 
-        SanctionWebhook.instance.sendWebHook(muter, targetName, reason, "Mute pendant " + DateUtils.getDurationIn(duration), serverName);
+        //SanctionWebhook.instance.sendWebHook(muter, targetName, reason, "Mute pendant " + DateUtils.getDurationIn(duration), serverName);
     }
 
     public void setMute(User user, String muter, String reason, long expiration) {

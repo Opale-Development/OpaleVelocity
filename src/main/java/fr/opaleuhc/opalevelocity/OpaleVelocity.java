@@ -24,6 +24,7 @@ import fr.opaleuhc.opalevelocity.sanctions.ban.BanCmd;
 import fr.opaleuhc.opalevelocity.sanctions.ban.BanManager;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteCmd;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteManager;
+import fr.opaleuhc.opalevelocity.serverstatus.ServerStatusManager;
 import fr.opaleuhc.opalevelocity.staff.StaffCmd;
 import fr.opaleuhc.opalevelocity.staff.StaffGCmd;
 import fr.opaleuhc.opalevelocity.tab.TABManager;
@@ -61,7 +62,7 @@ public class OpaleVelocity {
 
         instance = this;
 
-        logger.info("Loaded velocity plugin, awaiting for proxy initialization...");
+        logger.info("Loaded velocity started, awaiting for proxy initialization...");
     }
 
     @Subscribe
@@ -80,6 +81,7 @@ public class OpaleVelocity {
         new TABManager();
         new MaintenanceGManager();
         new SanctionWebhook();
+        new ServerStatusManager();
 
         logger.info("Registering listeners...");
         proxy.getEventManager().register(this, new PlayerListener());

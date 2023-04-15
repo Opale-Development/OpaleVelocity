@@ -38,6 +38,7 @@ public class ServerStatusManager {
                 rs.ping().whenComplete((ping, throwable) -> {
                     if (throwable != null) {
                         serversStatus.put(rs.getServerInfo().getName(), ServerStatus.OFF);
+                        lastPing.put(rs.getServerInfo().getName(), System.currentTimeMillis());
                     } else {
                         serversStatus.put(rs.getServerInfo().getName(), ServerStatus.ON);
                         lastPing.put(rs.getServerInfo().getName(), System.currentTimeMillis());
@@ -59,9 +60,8 @@ public class ServerStatusManager {
         CompletableFuture.runAsync(() -> lastPing.keySet().forEach(serverName -> {
             for (Player player : OpaleVelocity.instance.getProxy().getAllPlayers()) {
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                out.writeUTF("status");
                 out.writeUTF(serverName);
-                out.writeUTF(getServerStatus(serverName).name().toLowerCase());
+                out.writeUTF(getServerStatus(serverName).name());
                 Optional<ServerConnection> serverConnection = player.getCurrentServer();
                 serverConnection.ifPresent(connection -> connection.sendPluginMessage(STATUT_CHANNEL, out.toByteArray()));
                 break;

@@ -14,7 +14,7 @@ public class MaintenanceGCmd implements SimpleCommand {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
 
-        if (!source.hasPermission("opaleuhc.maintenanceg.cmd")) {
+        if (!source.hasPermission("opale.maintenanceg.cmd")) {
             source.sendMessage(Component.text("§cVous n'avez pas la permission d'executer cette commande !"));
             return;
         }
@@ -57,6 +57,6 @@ public class MaintenanceGCmd implements SimpleCommand {
 
     @Override
     public boolean hasPermission(Invocation invocation) {
-        return SimpleCommand.super.hasPermission(invocation);
+        return invocation.source().hasPermission("opale.maintenanceg.cmd");
     }
 }

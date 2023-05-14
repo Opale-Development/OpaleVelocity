@@ -26,7 +26,7 @@ public class MaintenanceGManager {
 
     public boolean canJoin(Player p) {
         if (maintenance) {
-            return p.hasPermission("opaleuhc.maintenanceg.bypass");
+            return p.hasPermission("opale.maintenanceg.bypass");
         }
         return true;
     }

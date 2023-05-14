@@ -55,6 +55,8 @@ public class OpaleVelocity {
     private final ProxyServer proxy;
     private final Logger logger;
 
+    public String serverMotd = "§3§lOpale - 0.0.1 §7- §1Ouvert\n§bFaction, LG UHC, Mario UHC et bientôt plus..";
+
     @Inject
     public OpaleVelocity(ProxyServer proxy, Logger logger) {
         this.proxy = proxy;

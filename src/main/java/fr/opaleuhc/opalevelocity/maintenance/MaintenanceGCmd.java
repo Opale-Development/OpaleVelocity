@@ -14,16 +14,35 @@ public class MaintenanceGCmd implements SimpleCommand {
         CommandSource source = invocation.source();
         String[] args = invocation.arguments();
 
-        if (!source.hasPermission("opaleuhc.maintenanceg.cmd")) {
+        if (!source.hasPermission("opale.maintenanceg.cmd")) {
             source.sendMessage(Component.text("§cVous n'avez pas la permission d'executer cette commande !"));
             return;
         }
-        if (args.length != 0) {
-            source.sendMessage(Component.text("§cUsage: /maintenanceg <on/off>"));
-            return;
+        boolean oldMaintenance = MaintenanceGManager.instance.isMaintenance();
+        source.sendMessage(Component.text("§aMaintenance avant la commande : §e" + (oldMaintenance ? "§cON" : "§aOFF") + "§a."));
+        if (args.length == 1) {
+            boolean maintenance = args[0].equalsIgnoreCase("on");
+            boolean maintenance2 = args[0].equalsIgnoreCase("off");
+            if (maintenance) {
+                if (oldMaintenance) {
+                    source.sendMessage(Component.text("§cLe serveur est déjà en maintenance."));
+                    return;
+                }
+                MaintenanceGManager.instance.setMaintenance(true);
+                source.sendMessage(Component.text("§aMaintenance : §cON"));
+                return;
+            }
+            if (maintenance2) {
+                if (!oldMaintenance) {
+                    source.sendMessage(Component.text("§cLe serveur n'était pas en maintenance."));
+                    return;
+                }
+                MaintenanceGManager.instance.setMaintenance(false);
+                source.sendMessage(Component.text("§aMaintenance : §aOFF"));
+                return;
+            }
         }
-        MaintenanceGManager.instance.setMaintenance(!MaintenanceGManager.instance.isMaintenance());
-        source.sendMessage(Component.text("§aMaintenance: " + (MaintenanceGManager.instance.isMaintenance() ? "§cON" : "§aOFF")));
+        source.sendMessage(Component.text("§cUsage: /maintenanceg <on/off>"));
     }
 
     @Override
@@ -38,6 +57,6 @@ public class MaintenanceGCmd implements SimpleCommand {
 
     @Override
     public boolean hasPermission(Invocation invocation) {
-        return SimpleCommand.super.hasPermission(invocation);
+        return invocation.source().hasPermission("opale.maintenanceg.cmd");
     }
 }

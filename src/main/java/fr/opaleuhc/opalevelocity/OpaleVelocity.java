@@ -24,6 +24,8 @@ import fr.opaleuhc.opalevelocity.sanctions.ban.BanCmd;
 import fr.opaleuhc.opalevelocity.sanctions.ban.BanManager;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteCmd;
 import fr.opaleuhc.opalevelocity.sanctions.mute.MuteManager;
+import fr.opaleuhc.opalevelocity.serverqueue.ServerQueueCmd;
+import fr.opaleuhc.opalevelocity.serverqueue.ServerQueueManager;
 import fr.opaleuhc.opalevelocity.serverstatus.ServerStatusManager;
 import fr.opaleuhc.opalevelocity.staff.StaffCmd;
 import fr.opaleuhc.opalevelocity.staff.StaffGCmd;
@@ -84,6 +86,7 @@ public class OpaleVelocity {
         new MaintenanceGManager();
         new SanctionWebhook();
         new ServerStatusManager();
+        new ServerQueueManager();
 
         logger.info("Registering listeners...");
         proxy.getEventManager().register(this, new PlayerListener());
@@ -105,6 +108,7 @@ public class OpaleVelocity {
         proxy.getCommandManager().register("infog", new InfoGCmd());
         proxy.getCommandManager().register("hub", new HubCmd());
         proxy.getCommandManager().register("maintenanceg", new MaintenanceGCmd());
+        proxy.getCommandManager().register("sq", new ServerQueueCmd(), "queue");
 
         logger.info("OpaleVelocity loaded!");
     }

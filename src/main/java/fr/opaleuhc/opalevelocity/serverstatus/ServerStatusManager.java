@@ -90,4 +90,19 @@ public class ServerStatusManager {
         return servers;
     }
 
+    public String getServerStatusString(String serverName) {
+        return getServerStatus(serverName).getStatus();
+    }
+
+    private int getServerPlayers(String serverName) {
+        if (!playersCount.containsKey(serverName)) return -1;
+        return playersCount.get(serverName);
+    }
+
+    public String getServerPlayersNonFormatted(String serverName) {
+        int players = getServerPlayers(serverName);
+        if (players == -1) return "";
+        return "§a" + players + " connecté" + (players > 1 ? "s" : "");
+    }
+
 }

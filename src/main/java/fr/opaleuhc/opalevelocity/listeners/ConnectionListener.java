@@ -25,17 +25,17 @@ public class ConnectionListener {
 
     @Subscribe
     public void onLogin(LoginEvent e) {
-        if (!MaintenanceGManager.instance.canJoin(e.getPlayer())) {
+        if (!MaintenanceGManager.INSTANCE.canJoin(e.getPlayer())) {
             e.setResult(ResultedEvent.ComponentResult.denied(Component.text("§cLe serveur est en maintenance.")));
             return;
         }
-        User user = UserManager.instance.getAccount(e.getPlayer().getUniqueId(), e.getPlayer().getUsername());
+        User user = UserManager.INSTANCE.getAccount(e.getPlayer().getUniqueId(), e.getPlayer().getUsername());
         if (user.isBanned()) {
             if (user.getBanExpiration() != -1 && user.getBanExpiration() < System.currentTimeMillis()) {
-                BanManager.instance.unban(user);
+                BanManager.INSTANCE.unban(user);
                 return;
             }
-            e.setResult(ResultedEvent.ComponentResult.denied(BanManager.instance.getDisconnectMessage(user.getBanReason(), user.getBanExpiration(), user.getBanAuthor())));
+            e.setResult(ResultedEvent.ComponentResult.denied(BanManager.INSTANCE.getDisconnectMessage(user.getBanReason(), user.getBanExpiration(), user.getBanAuthor())));
             return;
         }
     }
@@ -47,13 +47,13 @@ public class ConnectionListener {
         ServerPing.Version version;
         ArrayList<ServerPing.SamplePlayer> samplePlayers = new ArrayList<>();
         samplePlayers.add(new ServerPing.SamplePlayer("§dOn revient au plus vite :D", UUID.fromString("00000000-0000-0000-0000-000000000000")));
-        if (!MaintenanceGManager.instance.isMaintenance()) {
-            description = Component.text(OpaleVelocity.instance.serverMotd);
-            players = new ServerPing.Players(OpaleVelocity.instance.getProxy().getPlayerCount(), 250, samplePlayers);
+        if (!MaintenanceGManager.INSTANCE.isMaintenance()) {
+            description = Component.text(OpaleVelocity.INSTANCE.serverMotd);
+            players = new ServerPing.Players(OpaleVelocity.INSTANCE.getProxy().getPlayerCount(), 250, samplePlayers);
             version = new ServerPing.Version(762, "Opale est en 1.19.4+");
         } else {
-            description = Component.text(MaintenanceGManager.instance.maintenanceMessage);
-            players = new ServerPing.Players(OpaleVelocity.instance.getProxy().getPlayerCount(), 0, samplePlayers);
+            description = Component.text(MaintenanceGManager.INSTANCE.maintenanceMessage);
+            players = new ServerPing.Players(OpaleVelocity.INSTANCE.getProxy().getPlayerCount(), 0, samplePlayers);
             version = new ServerPing.Version(9999, "§4§lMaintenance...");
         }
         ServerPing ping = new ServerPing(version, players, description, e.getPing().getFavicon().orElse(null), e.getPing().getModinfo().orElse(null));

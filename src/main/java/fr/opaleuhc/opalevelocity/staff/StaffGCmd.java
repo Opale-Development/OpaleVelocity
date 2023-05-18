@@ -21,7 +21,7 @@ public class StaffGCmd implements SimpleCommand {
             return;
         }
         String message = String.join(" ", args);
-        OpaleVelocity.instance.sendStaffMsgToEveryoneOnTheProxy(message, "opaleuhc.staff", p.getUsername());
+        OpaleVelocity.INSTANCE.sendStaffMsgToEveryoneOnTheProxy(message, "opaleuhc.staff", p.getUsername());
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ReplyCmd implements SimpleCommand {
             source.sendMessage(Component.text("§cVous n'avez pas encore envoyé de dm."));
             return;
         }
-        Player target = OpaleVelocity.instance.getProxy().getPlayer(fr.opaleuhc.opalevelocity.pm.MsgCmd.lastMsg.get(p.getUniqueId())).orElse(null);
+        Player target = OpaleVelocity.INSTANCE.getProxy().getPlayer(fr.opaleuhc.opalevelocity.pm.MsgCmd.lastMsg.get(p.getUniqueId())).orElse(null);
         if (target == null) {
             source.sendMessage(Component.text("§cCe joueur n'est pas connecté ou n'est plus connecté."));
             return;

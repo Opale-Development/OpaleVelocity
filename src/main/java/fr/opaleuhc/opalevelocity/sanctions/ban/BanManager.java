@@ -11,10 +11,10 @@ import net.kyori.adventure.text.Component;
 
 public class BanManager {
 
-    public static BanManager instance;
+    public static BanManager INSTANCE;
 
     public BanManager() {
-        instance = this;
+        INSTANCE = this;
     }
 
     public void disconnect(Player target, String reason, long expiration, String banner) {
@@ -28,10 +28,10 @@ public class BanManager {
     }
 
     public String ban(String targetStr, long duration, String reason, String banner, boolean doesBannerCanBypassExistingBan) {
-        Player target = OpaleVelocity.instance.getProxy().getPlayer(targetStr).orElse(null);
+        Player target = OpaleVelocity.INSTANCE.getProxy().getPlayer(targetStr).orElse(null);
         long expiration = (duration > 0 ? System.currentTimeMillis() + duration : -1);
         if (target != null) disconnect(target, reason, expiration, banner);
-        User user = UserManager.instance.getAccount(targetStr);
+        User user = UserManager.INSTANCE.getAccount(targetStr);
         if (user != null) {
             if (!user.isBanned()) {
                 setBan(user, banner, reason, expiration);
@@ -53,18 +53,18 @@ public class BanManager {
         if (target != null && target.getCurrentServer().isPresent())
             serverName = target.getCurrentServer().get().getServerInfo().getName();
 
-        SanctionWebhook.instance.sendWebHook(muter, targetName, reason, "Ban pendant " + DateUtils.getDurationIn(duration), serverName);
+        SanctionWebhook.INSTANCE.sendWebHook(muter, targetName, reason, "Ban pendant " + DateUtils.getDurationIn(duration), serverName);
     }
 
     public void setBan(User user, String banner, String reason, long expiration) {
         user.setBan(banner, reason, expiration);
-        UserManager.instance.makePatch(user.getUuid(), "ban", user.getBan());
+        UserManager.INSTANCE.makePatch(user.getUuid(), "ban", user.getBan());
     }
 
     public void unban(User user) {
         user.setBan(null, null, 0);
-        UserManager.instance.makePatch(user.getUuid(), "ban", "null");
-        if (OpaleVelocity.instance.getProxy().getPlayer(user.getUuid()).isPresent())
-            OpaleVelocity.instance.getProxy().getPlayer(user.getUuid()).get().sendMessage(Component.text("§aVous avez été débanni du serveur."));
+        UserManager.INSTANCE.makePatch(user.getUuid(), "ban", "null");
+        if (OpaleVelocity.INSTANCE.getProxy().getPlayer(user.getUuid()).isPresent())
+            OpaleVelocity.INSTANCE.getProxy().getPlayer(user.getUuid()).get().sendMessage(Component.text("§aVous avez été débanni du serveur."));
     }
 }

@@ -25,7 +25,7 @@ public class StaffCmd implements SimpleCommand {
             return;
         }
         String message = String.join(" ", args);
-        OpaleVelocity.instance.sendStaffMsgToEveryoneOnTheSpigot(message, "opaleuhc.staff", p.getCurrentServer().get().getServerInfo(), p.getUsername());
+        OpaleVelocity.INSTANCE.sendStaffMsgToEveryoneOnTheSpigot(message, "opaleuhc.staff", p.getCurrentServer().get().getServerInfo(), p.getUsername());
     }
 
     @Override

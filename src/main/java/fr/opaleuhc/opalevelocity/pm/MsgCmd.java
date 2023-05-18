@@ -28,7 +28,7 @@ public class MsgCmd implements SimpleCommand {
             source.sendMessage(Component.text("§cUsage: /msg <player> <message>"));
             return;
         }
-        Player target = OpaleVelocity.instance.getProxy().getPlayer(args[0]).orElse(null);
+        Player target = OpaleVelocity.INSTANCE.getProxy().getPlayer(args[0]).orElse(null);
         if (target == null) {
             source.sendMessage(Component.text("§cCe joueur n'est pas connecté."));
             return;
@@ -54,7 +54,7 @@ public class MsgCmd implements SimpleCommand {
 
     @Override
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
-        return OpaleVelocity.instance.getEveryPlayersWithoutMe((Player) invocation.source());
+        return OpaleVelocity.INSTANCE.getEveryPlayersWithoutMe((Player) invocation.source());
     }
 
     @Override

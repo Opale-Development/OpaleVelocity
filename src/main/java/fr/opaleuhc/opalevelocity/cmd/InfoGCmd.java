@@ -12,7 +12,7 @@ public class InfoGCmd implements SimpleCommand {
     public void execute(Invocation invocation) {
         String[] args = invocation.arguments();
         String message = "§6[Info-Global] §f" + String.join(" ", args);
-        OpaleVelocity.instance.sendToEveryoneOnProxy(message);
+        OpaleVelocity.INSTANCE.sendToEveryoneOnProxy(message);
     }
 
     @Override

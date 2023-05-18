@@ -6,12 +6,12 @@ import net.kyori.adventure.text.Component;
 
 public class MaintenanceGManager {
 
-    public static MaintenanceGManager instance;
+    public static MaintenanceGManager INSTANCE;
     public boolean maintenance = true;
     public String maintenanceMessage = "§3§lOpale §7- §c§lMAINTENANCE EN COURS...\n§a>>> §dhttps://discord.opaleuhc.fr";
 
     public MaintenanceGManager() {
-        instance = this;
+        INSTANCE = this;
     }
 
     public boolean isMaintenance() {
@@ -32,7 +32,7 @@ public class MaintenanceGManager {
     }
 
     public void checkForEvacuation() {
-        for (Player p : OpaleVelocity.instance.getProxy().getAllPlayers()) {
+        for (Player p : OpaleVelocity.INSTANCE.getProxy().getAllPlayers()) {
             if (!canJoin(p)) {
                 p.disconnect(Component.text("§cLe serveur est en maintenance."));
             }

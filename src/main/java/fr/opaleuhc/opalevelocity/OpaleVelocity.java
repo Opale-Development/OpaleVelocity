@@ -51,7 +51,7 @@ import java.util.concurrent.CompletableFuture;
 )
 public class OpaleVelocity {
 
-    public static OpaleVelocity instance;
+    public static OpaleVelocity INSTANCE;
     private final ProxyServer proxy;
     private final Logger logger;
 
@@ -62,7 +62,7 @@ public class OpaleVelocity {
         this.proxy = proxy;
         this.logger = logger;
 
-        instance = this;
+        INSTANCE = this;
 
         logger.info("Loaded velocity started, awaiting for proxy initialization...");
     }

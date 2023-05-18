@@ -20,7 +20,7 @@ import java.util.Optional;
 
 public class CPMListener {
 
-    public static CPMListener instance;
+    public static CPMListener INSTANCE;
     private final ProxyServer proxy;
     private final Logger logger;
     public ChannelIdentifier channelIdentifier;
@@ -30,7 +30,7 @@ public class CPMListener {
         this.proxy = proxy;
         this.logger = logger;
 
-        instance = this;
+        INSTANCE = this;
 
         channelIdentifier = MinecraftChannelIdentifier.from("opaleuhc:update");
         sanctionsChannelIdentifier = MinecraftChannelIdentifier.from("opaleuhc:sanctions");

@@ -33,7 +33,7 @@ public class ReportCmd implements SimpleCommand {
             source.sendMessage(Component.text("Usage: /report <joueur> <raison>"));
             return;
         }
-        Player target = OpaleVelocity.instance.getProxy().getPlayer(args[0]).orElse(null);
+        Player target = OpaleVelocity.INSTANCE.getProxy().getPlayer(args[0]).orElse(null);
         if (target == null) {
             source.sendMessage(Component.text("Ce joueur n'est pas connecté."));
             return;
@@ -61,7 +61,7 @@ public class ReportCmd implements SimpleCommand {
 
     @Override
     public CompletableFuture<List<String>> suggestAsync(Invocation invocation) {
-        return OpaleVelocity.instance.getEveryPlayersWithoutMe((Player) invocation.source());
+        return OpaleVelocity.INSTANCE.getEveryPlayersWithoutMe((Player) invocation.source());
     }
 
     @Override

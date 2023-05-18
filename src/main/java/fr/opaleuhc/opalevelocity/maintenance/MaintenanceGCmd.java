@@ -18,7 +18,7 @@ public class MaintenanceGCmd implements SimpleCommand {
             source.sendMessage(Component.text("§cVous n'avez pas la permission d'executer cette commande !"));
             return;
         }
-        boolean oldMaintenance = MaintenanceGManager.instance.isMaintenance();
+        boolean oldMaintenance = MaintenanceGManager.INSTANCE.isMaintenance();
         source.sendMessage(Component.text("§aMaintenance avant la commande : §e" + (oldMaintenance ? "§cON" : "§aOFF") + "§a."));
         if (args.length == 1) {
             boolean maintenance = args[0].equalsIgnoreCase("on");
@@ -28,7 +28,7 @@ public class MaintenanceGCmd implements SimpleCommand {
                     source.sendMessage(Component.text("§cLe serveur est déjà en maintenance."));
                     return;
                 }
-                MaintenanceGManager.instance.setMaintenance(true);
+                MaintenanceGManager.INSTANCE.setMaintenance(true);
                 source.sendMessage(Component.text("§aMaintenance : §cON"));
                 return;
             }
@@ -37,7 +37,7 @@ public class MaintenanceGCmd implements SimpleCommand {
                     source.sendMessage(Component.text("§cLe serveur n'était pas en maintenance."));
                     return;
                 }
-                MaintenanceGManager.instance.setMaintenance(false);
+                MaintenanceGManager.INSTANCE.setMaintenance(false);
                 source.sendMessage(Component.text("§aMaintenance : §aOFF"));
                 return;
             }

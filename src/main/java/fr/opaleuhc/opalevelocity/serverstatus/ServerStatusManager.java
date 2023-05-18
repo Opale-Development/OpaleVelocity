@@ -25,9 +25,9 @@ public class ServerStatusManager {
     public ServerStatusManager() {
         INSTANCE = this;
 
-        OpaleVelocity.instance.getProxy().getChannelRegistrar().register(STATUT_CHANNEL);
+        OpaleVelocity.INSTANCE.getProxy().getChannelRegistrar().register(STATUT_CHANNEL);
 
-        OpaleVelocity.instance.getProxy().getScheduler().buildTask(OpaleVelocity.instance, () -> {
+        OpaleVelocity.INSTANCE.getProxy().getScheduler().buildTask(OpaleVelocity.INSTANCE, () -> {
             pingServers();
             sendStatusForEveryServers();
         }).repeat(2, TimeUnit.SECONDS).schedule();
@@ -35,7 +35,7 @@ public class ServerStatusManager {
 
     public void pingServers() {
         CompletableFuture.runAsync(() -> {
-            for (RegisteredServer rs : OpaleVelocity.instance.getProxy().getAllServers()) {
+            for (RegisteredServer rs : OpaleVelocity.INSTANCE.getProxy().getAllServers()) {
                 final int pOnline = rs.getPlayersConnected().size();
                 rs.ping().whenComplete((ping, throwable) -> {
                     if (throwable != null) {
@@ -66,7 +66,7 @@ public class ServerStatusManager {
 
     public void sendStatusForEveryServers() {
         CompletableFuture.runAsync(() -> lastPing.keySet().forEach(serverName -> {
-            for (Player player : OpaleVelocity.instance.getProxy().getAllPlayers()) {
+            for (Player player : OpaleVelocity.INSTANCE.getProxy().getAllPlayers()) {
                 if (player.getCurrentServer().isEmpty()) continue;
                 if (player.getCurrentServer().get().getServer().getServerInfo().getName().equals(serverName)) continue;
                 ByteArrayDataOutput out = ByteStreams.newDataOutput();

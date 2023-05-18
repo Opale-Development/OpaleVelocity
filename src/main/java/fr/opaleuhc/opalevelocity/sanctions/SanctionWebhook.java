@@ -9,10 +9,10 @@ import java.io.IOException;
 public class SanctionWebhook {
 
     private static final String webhook_url = "https://discord.com/api/webhooks/1093175865132720198/_A5H1VDkh4rnwhTVu9v5rBTVjLxOzPmjDCLzkRfx0AF7FW5FVdb-LjI0GOqc5F8ST6KF";
-    public static SanctionWebhook instance;
+    public static SanctionWebhook INSTANCE;
 
     public SanctionWebhook() {
-        instance = this;
+        INSTANCE = this;
     }
 
     public void sendWebHook(String p, String target, String reason, String sanction, String server) {

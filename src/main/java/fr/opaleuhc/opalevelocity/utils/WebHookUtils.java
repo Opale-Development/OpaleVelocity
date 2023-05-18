@@ -374,7 +374,7 @@ public class WebHookUtils {
             for (final Map.Entry<String, Object> entry : entrySet) {
                 final Object val = entry.getValue();
                 builder.append(this.quote(entry.getKey())).append(":");
-                if (val instanceof String) {
+                if (val instanceof String){
                     builder.append(this.quote(String.valueOf(val)));
                 } else if (val instanceof Integer) {
                     builder.append(Integer.valueOf(String.valueOf(val)));

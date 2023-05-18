@@ -30,7 +30,7 @@ public class HubCmd implements SimpleCommand {
                 p.sendMessage(Component.text("§cVous êtes déjà sur un hub !"));
                 return;
             }
-            RegisteredServer hubServer = OpaleVelocity.instance.getHubServer();
+            RegisteredServer hubServer = OpaleVelocity.INSTANCE.getHubServer();
             if (hubServer == null) {
                 p.sendMessage(Component.text("§cAucun hub n'a été trouvé !"));
                 return;

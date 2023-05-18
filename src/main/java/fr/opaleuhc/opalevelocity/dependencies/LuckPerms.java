@@ -7,13 +7,13 @@ import org.slf4j.Logger;
 import java.util.UUID;
 
 public class LuckPerms {
-    public static LuckPerms instance;
+    public static LuckPerms INSTANCE;
     private final ProxyServer server;
     private final Logger logger;
     private final net.luckperms.api.LuckPerms luckPermsAPI;
 
     public LuckPerms(ProxyServer server, Logger logger, net.luckperms.api.LuckPerms luckPermsAPI) {
-        instance = this;
+        INSTANCE = this;
         this.server = server;
         this.logger = logger;
 

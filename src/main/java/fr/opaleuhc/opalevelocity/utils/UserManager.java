@@ -13,26 +13,26 @@ import java.util.concurrent.TimeUnit;
 
 public class UserManager {
 
-    public static UserManager instance;
+    public static UserManager INSTANCE;
     public ArrayList<User> users = new ArrayList<>();
 
     public UserManager() {
-        instance = this;
+        INSTANCE = this;
 
         checkForEndOfSanctions();
     }
 
     public void checkForEndOfSanctions() {
-        OpaleVelocity.instance.getProxy().getScheduler().buildTask(OpaleVelocity.instance, () -> {
+        OpaleVelocity.INSTANCE.getProxy().getScheduler().buildTask(OpaleVelocity.INSTANCE, () -> {
             for (User user : users) {
                 if (user.isBanned()) {
                     if (user.getBanExpiration() != -1 && user.getBanExpiration() < System.currentTimeMillis()) {
-                        BanManager.instance.unban(user);
+                        BanManager.INSTANCE.unban(user);
                     }
                 }
                 if (user.isMuted()) {
                     if (user.getMuteExpiration() != -1 && user.getMuteExpiration() < System.currentTimeMillis()) {
-                        MuteManager.instance.unmute(user);
+                        MuteManager.INSTANCE.unmute(user);
                     }
                 }
             }

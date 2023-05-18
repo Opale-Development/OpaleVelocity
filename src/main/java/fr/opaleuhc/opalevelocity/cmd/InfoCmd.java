@@ -25,7 +25,7 @@ public class InfoCmd implements SimpleCommand {
             return;
         }
         String message = "§6[Info-Serveur] §f" + String.join(" ", args);
-        OpaleVelocity.instance.sendToEveryoneOnSpigot(message, p.getCurrentServer().get().getServerInfo());
+        OpaleVelocity.INSTANCE.sendToEveryoneOnSpigot(message, p.getCurrentServer().get().getServerInfo());
     }
 
     @Override

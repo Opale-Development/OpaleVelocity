@@ -13,6 +13,8 @@ public class ServerQueueManager {
 
     public static ServerQueueManager INSTANCE;
     public HashMap<String, LinkedList<UUID>> queues = new HashMap<>();
+    public HashMap<String, Integer> skipTicks = new HashMap<>();
+    public HashMap<UUID, ServerQueuePriority> priority = new HashMap<>();
 
     public ServerQueueManager() {
         INSTANCE = this;
@@ -52,8 +54,30 @@ public class ServerQueueManager {
                 return;
             }
         }
+        ServerQueuePriority priority = getPriority(p);
+        addToQueueWithPriority(priority, p, queue);
+        p.sendMessage(Component.text("§aVous avez rejoint la file d'attente du serveur §e" + chosenServer + "§a. Priorité : " + priority.getName() + "§a."));
+    }
+
+    public ServerQueuePriority getPriority(Player p) {
+        if (p.hasPermission("opale.staff")) return ServerQueuePriority.PRIORITAIRE;
+        if (p.hasPermission("opale.haute")) return ServerQueuePriority.HAUTE;
+        if (p.hasPermission("opale.normale")) return ServerQueuePriority.NORMALE;
+        return ServerQueuePriority.BASSE;
+    }
+
+    public void addToQueueWithPriority(ServerQueuePriority sqp, Player p, LinkedList<UUID> queue) {
+        int i = 0;
+        for (UUID uuid : queue) {
+            if (priority.containsKey(uuid)) {
+                if (priority.get(uuid).getPriority() < sqp.getPriority()) {
+                    queue.add(i, p.getUniqueId());
+                    return;
+                }
+            }
+            i++;
+        }
         queue.add(p.getUniqueId());
-        p.sendMessage(Component.text("§aVous avez rejoint la file d'attente du serveur §e" + chosenServer + "§a."));
     }
 
     public void leaveQueues(Player p) {
@@ -100,6 +124,36 @@ public class ServerQueueManager {
         }
     }
 
+    public ArrayList<UUID> getIfThereIsPriotairePeople() {
+        ArrayList<UUID> prioritaire = new ArrayList<>();
+        for (Map.Entry<UUID, ServerQueuePriority> entry : priority.entrySet()) {
+            if (entry.getValue() == ServerQueuePriority.PRIORITAIRE) prioritaire.add(entry.getKey());
+        }
+        return prioritaire;
+    }
+
+    public UUID getTheBetterPlacedAndWithPriority(LinkedList<UUID> queue) {
+        UUID uuid = null;
+        int bestPriority = -1;
+        for (UUID uuid1 : queue) {
+            if (priority.containsKey(uuid1)) {
+                if (priority.get(uuid1).getPriority() > bestPriority) {
+                    uuid = uuid1;
+                    bestPriority = priority.get(uuid1).getPriority();
+                    continue;
+                }
+            }
+        }
+        if (uuid == null) {
+            try {
+                uuid = queue.get(0);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return uuid;
+    }
+
     public void queueTick() {
         //this method process the player to the servers
         queueUpdate();
@@ -107,22 +161,52 @@ public class ServerQueueManager {
             LinkedList<UUID> queue = entry.getValue();
             if (queue == null) continue;
             if (queue.size() == 0) continue;
-            Player p = OpaleVelocity.instance.getProxy().getPlayer(queue.get(0)).orElse(null);
-            if (p == null) continue;
-            if (ServerStatusManager.INSTANCE.getServerStatus(entry.getKey()) == ServerStatus.ON) {
-
-                //TODO: maintenance par serveur
-
-                p.createConnectionRequest(OpaleVelocity.instance.getProxy().getServer(entry.getKey()).get()).connect().thenAccept((v) -> {
-                    if (v.isSuccessful()) {
-                        queue.remove(p.getUniqueId());
-                        p.sendMessage(Component.text("§aVous avez été connecté au serveur §e" + entry.getKey() + "§a avec succès."));
-                        p.sendActionBar(Component.text("§aConnexion réussie !"));
-                    } else {
-                        v.getReasonComponent().ifPresent((r) -> p.sendMessage(Component.text("§cUne erreur est survenue lors de la connexion au serveur §e" + entry.getKey() + "§c : " + r)));
+            ArrayList<UUID> prioritaire = getIfThereIsPriotairePeople();
+            if (!prioritaire.isEmpty()) {
+                int ticks = 0;
+                for (UUID uuid : prioritaire) {
+                    if (queue.contains(uuid)) {
+                        Player p = OpaleVelocity.instance.getProxy().getPlayer(uuid).orElse(null);
+                        if (p == null) continue;
+                        processPlayer(p, entry.getKey(), queue);
+                        ticks++;
                     }
-                });
+                }
+                if (skipTicks.containsKey(entry.getKey()))
+                    skipTicks.put(entry.getKey(), skipTicks.get(entry.getKey()) + ticks);
+                else skipTicks.put(entry.getKey(), ticks);
             }
+            if (skipTicks.containsKey(entry.getKey())) {
+                int ticks = skipTicks.get(entry.getKey());
+                if (ticks > 0) {
+                    skipTicks.put(entry.getKey(), ticks - 1);
+                    continue;
+                }
+            }
+            if (queue.size() == 0) continue;
+            UUID uuid = getTheBetterPlacedAndWithPriority(queue);
+            if (uuid == null) continue;
+            Player p = OpaleVelocity.instance.getProxy().getPlayer(uuid).orElse(null);
+            if (p == null) continue;
+            processPlayer(p, entry.getKey(), queue);
+        }
+    }
+
+    public void processPlayer(Player p, String server, LinkedList<UUID> queue) {
+        if (ServerStatusManager.INSTANCE.getServerStatus(server) == ServerStatus.ON) {
+
+            //TODO: maintenance par serveur
+
+            p.createConnectionRequest(OpaleVelocity.instance.getProxy().getServer(server).get()).connect().thenAccept((v) -> {
+                if (v.isSuccessful()) {
+                    queue.remove(p.getUniqueId());
+                    p.sendMessage(Component.text("§aVous avez été connecté au serveur §e" + server + "§a avec succès."));
+                    p.sendActionBar(Component.text("§aConnexion réussie !"));
+                } else {
+                    v.getReasonComponent().ifPresent((r) -> p.sendMessage(Component.text("§cUne erreur est survenue lors de la connexion au serveur §e" +
+                            server + "§c : " + r)));
+                }
+            });
         }
     }
 }

@@ -19,8 +19,8 @@ public class ServerQueueManager {
     public ServerQueueManager() {
         INSTANCE = this;
 
-        OpaleVelocity.instance.getProxy().getScheduler().buildTask(OpaleVelocity.instance, this::queueTick).repeat(3, java.util.concurrent.TimeUnit.SECONDS).schedule();
-        OpaleVelocity.instance.getProxy().getScheduler().buildTask(OpaleVelocity.instance, this::queueUpdate).repeat(1, java.util.concurrent.TimeUnit.SECONDS).schedule();
+        OpaleVelocity.INSTANCE.getProxy().getScheduler().buildTask(OpaleVelocity.INSTANCE, this::queueTick).repeat(3, java.util.concurrent.TimeUnit.SECONDS).schedule();
+        OpaleVelocity.INSTANCE.getProxy().getScheduler().buildTask(OpaleVelocity.INSTANCE, this::queueUpdate).repeat(1, java.util.concurrent.TimeUnit.SECONDS).schedule();
     }
 
     public boolean isAlreadyInQueue(UUID uuid) {
@@ -101,7 +101,7 @@ public class ServerQueueManager {
             if (queue.size() == 0) continue;
             ArrayList<UUID> toRemove = new ArrayList<>();
             for (UUID uuid : queue) {
-                Player p = OpaleVelocity.instance.getProxy().getPlayer(uuid).orElse(null);
+                Player p = OpaleVelocity.INSTANCE.getProxy().getPlayer(uuid).orElse(null);
                 if (p == null) {
                     toRemove.add(uuid);
                     continue;
@@ -117,7 +117,7 @@ public class ServerQueueManager {
             queue.removeAll(toRemove);
             for (int i = 0; i < queue.size(); i++) {
                 UUID uuid = queue.get(i);
-                Player p = OpaleVelocity.instance.getProxy().getPlayer(uuid).orElse(null);
+                Player p = OpaleVelocity.INSTANCE.getProxy().getPlayer(uuid).orElse(null);
                 if (p == null) continue;
                 p.sendActionBar(Component.text("§aServeur : §e" + entry.getKey() + "§a, statut : " +
                         ServerStatusManager.INSTANCE.getServerStatusString(entry.getKey()) +
@@ -168,7 +168,7 @@ public class ServerQueueManager {
                 int ticks = 0;
                 for (UUID uuid : prioritaire) {
                     if (queue.contains(uuid)) {
-                        Player p = OpaleVelocity.instance.getProxy().getPlayer(uuid).orElse(null);
+                        Player p = OpaleVelocity.INSTANCE.getProxy().getPlayer(uuid).orElse(null);
                         if (p == null) continue;
                         processPlayer(p, entry.getKey(), queue);
                         ticks++;
@@ -188,7 +188,7 @@ public class ServerQueueManager {
             if (queue.size() == 0) continue;
             UUID uuid = getTheBetterPlacedAndWithPriority(queue);
             if (uuid == null) continue;
-            Player p = OpaleVelocity.instance.getProxy().getPlayer(uuid).orElse(null);
+            Player p = OpaleVelocity.INSTANCE.getProxy().getPlayer(uuid).orElse(null);
             if (p == null) continue;
             processPlayer(p, entry.getKey(), queue);
         }
@@ -199,7 +199,7 @@ public class ServerQueueManager {
 
             //TODO: maintenance par serveur
 
-            p.createConnectionRequest(OpaleVelocity.instance.getProxy().getServer(server).get()).connect().thenAccept((v) -> {
+            p.createConnectionRequest(OpaleVelocity.INSTANCE.getProxy().getServer(server).get()).connect().thenAccept((v) -> {
                 if (v.isSuccessful()) {
                     queue.remove(p.getUniqueId());
                     p.sendMessage(Component.text("§aVous avez été connecté au serveur §e" + server + "§a avec succès."));

@@ -90,6 +90,7 @@ public class ServerQueueManager {
                 }
             }
         }
+        p.sendActionBar(Component.empty());
     }
 
     public void queueUpdate() {
@@ -118,7 +119,8 @@ public class ServerQueueManager {
                 UUID uuid = queue.get(i);
                 Player p = OpaleVelocity.instance.getProxy().getPlayer(uuid).orElse(null);
                 if (p == null) continue;
-                p.sendActionBar(Component.text("§aServeur : §e" + entry.getKey() + " " + ServerStatusManager.INSTANCE.getServerStatusString(entry.getKey()) +
+                p.sendActionBar(Component.text("§aServeur : §e" + entry.getKey() + "§a, statut : " +
+                        ServerStatusManager.INSTANCE.getServerStatusString(entry.getKey()) +
                         "§a, §e" + (i + 1) + "§8/§e" + queue.size() + "§a dans la file d'attente."));
             }
         }

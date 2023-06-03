@@ -8,6 +8,7 @@ import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import com.velocitypowered.api.proxy.server.RegisteredServer;
 import fr.opaleuhc.opalevelocity.OpaleVelocity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -79,6 +80,29 @@ public class ServerStatusManager {
                 break;
             }
         }));
+    }
+
+    public ArrayList<String> getServers(String server) {
+        ArrayList<String> servers = new ArrayList<>();
+        for (String s : serversStatus.keySet()) {
+            if (s.contains(server)) servers.add(s);
+        }
+        return servers;
+    }
+
+    public String getServerStatusString(String serverName) {
+        return getServerStatus(serverName).getStatus();
+    }
+
+    private int getServerPlayers(String serverName) {
+        if (!playersCount.containsKey(serverName)) return -1;
+        return playersCount.get(serverName);
+    }
+
+    public String getServerPlayersNonFormatted(String serverName) {
+        int players = getServerPlayers(serverName);
+        if (players == -1) return "";
+        return "§a" + players + " connecté" + (players > 1 ? "s" : "");
     }
 
 }
